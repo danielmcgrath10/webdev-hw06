@@ -11,6 +11,8 @@ import {
   Table,
 } from "react-bootstrap";
 import { ch_join, ch_push, ch_reset } from './socket';
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 export default function Bull(props) {
   const [state, setState] = useState({
@@ -60,13 +62,14 @@ export default function Bull(props) {
   };
 
   const checkWin = () => {
-    if (numGuesses > 0 || bullCow.bull < 4) {
+    if (numGuesses > 0 && bullCow.bull < 4) {
       if (
         _.isEmpty(curInput) ||
         curInput.length !== 4 || 
         guesses.includes(curInput) ||
         !isValid()
       ) {
+        toast.error("Invalid Input")
         return;
       }
       ch_push({guess: curInput});
@@ -121,7 +124,7 @@ export default function Bull(props) {
               </Row>
             </>
           :
-            numGuesses.length == 8 ?
+            numGuesses == 8 ?
               <>
                 <Row>
                   You Are Out of Guesses, Please Press the Reset Button Below
@@ -148,6 +151,17 @@ export default function Bull(props) {
             </>
         }
       </Container>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+      />
     </div>
   );
 }
