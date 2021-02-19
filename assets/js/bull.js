@@ -10,8 +10,6 @@ import {
   Row,
   Table,
 } from "react-bootstrap";
-import { NotificationManager } from "react-notifications";
-import NotificationContainer from "react-notifications/lib/NotificationContainer";
 import { ch_join, ch_push, ch_reset } from './socket';
 
 export default function Bull(props) {
@@ -65,17 +63,14 @@ export default function Bull(props) {
     if (numGuesses > 0 || bullCow.bull < 4) {
       if (
         _.isEmpty(curInput) ||
+        curInput.length !== 4 || 
+        guesses.includes(curInput) ||
         !isValid()
       ) {
-        NotificationManager.error("Needs to be a Valid Input");
         return;
       }
       ch_push({guess: curInput});
       setCurInput("");
-    } else if (bullCow.bull == 4){
-      NotificationManager.success("You have won the game!")
-    }else  {
-      NotificationManager.error("Game is Over, Need to Reset");
     }
   };
 

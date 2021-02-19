@@ -2,7 +2,7 @@ defmodule Bulls.Game do
     def new do 
         %{
           target: random_num(),
-          guesses: MapSet.new,
+          guesses: [],
           gameActive: true
         }
       end
@@ -14,9 +14,9 @@ defmodule Bulls.Game do
             Enum.count(st.guesses) >= 8 ->
                 %{st | gameActive: false}
             guess == st.target -> 
-                %{st | guesses: MapSet.put(st.guesses, guess), gameActive: false}
+                %{st | guesses: st.guesses ++ [guess], gameActive: false}
             true -> 
-                %{st | guesses: MapSet.put(st.guesses, guess)}
+                %{st | guesses: st.guesses ++ [guess]}
         end
       end
 
@@ -53,7 +53,7 @@ defmodule Bulls.Game do
                         bull: Enum.count(bulls),
                         cow: Enum.count(cows)
                     },
-                    guesses: MapSet.to_list(st.guesses),
+                    guesses: st.guesses,
                     gameActive: true
                 }
             else
@@ -62,7 +62,7 @@ defmodule Bulls.Game do
                         bull: Enum.count(bulls),
                         cow: Enum.count(cows)
                     },
-                    guesses: MapSet.to_list(st.guesses),
+                    guesses: st.guesses,
                     gameActive: true
                 }
             end
@@ -72,7 +72,7 @@ defmodule Bulls.Game do
                     bull: 4,
                     cow: 0
                 },
-                guesses: MapSet.to_list(st.guesses),
+                guesses: st.guesses,
                 gameActive: false
             }
         end
