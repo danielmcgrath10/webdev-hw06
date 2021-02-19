@@ -32,4 +32,6 @@ defmodule BullsWeb.UserSocket do
   # Returning `nil` makes this socket anonymous.
   @impl true
   def id(_socket), do: nil
+
+  channel "game:*", BullsWeb.GameChannel
 end

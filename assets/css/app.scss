@@ -1,7 +1,22 @@
 /* This file is for your main application css. */
 @import "./phoenix.css";
+// @import "~react-notifications/lib/notifications.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 /* Alerts and form errors */
+body{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  height: inherit;
+  width: inherit;
+}
+
 .alert {
   padding: 15px;
   margin-bottom: 20px;
@@ -35,34 +50,4 @@
   margin: -1rem 0 2rem;
 }
 
-.App {
-  text-align: center;
-  width: 100vw; 
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#game-container {
-  margin: auto;
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  height: 75%;
-  border: 1px solid grey;
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px lightgrey;
-  padding: 10px;
-}
-
-#input-row {
-  width: 75% ;
-}
-
-#display-row{
-  width: 75%;
-}
 

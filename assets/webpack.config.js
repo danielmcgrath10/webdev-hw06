@@ -33,7 +33,7 @@ module.exports = (env, options) => {
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', '@babel/preset-react'],
+              presets: ['@babel/preset-env','@babel/preset-react'],
             }
           }
         },
@@ -44,7 +44,21 @@ module.exports = (env, options) => {
             'css-loader',
             'sass-loader',
           ],
-        }
+        },
+        {
+          test: /\.(png|svg|jpe?g|gif)$/,
+          include: /images/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: '[name].[ext]',
+                outputPath: 'images/',
+                publicPath: 'images/'
+              }
+            }
+          ]
+        },
       ]
     },
     plugins: [
