@@ -1,17 +1,16 @@
 #!/bin/bash
 
-export SECRET_KEY_BASE=W68eso5YQOlbtvSNUR50N/HDWj6IaEhAwMR3LtzuBEQAefwYVbX84bvoTA7XtiGi
 export MIX_ENV=prod
 export PORT=4791
 
-echo "Stopping old copy of app, if any..."
+CFGD=$(readlink -f ~/.config/bulls)
 
-_build/prod/rel/bulls/bin/bulls stop || true
+if [ ! -e "$CFGD/base" ]; then
+    echo "run deploy first"
+    exit 1
+fi
 
-echo "Starting app..."
+SECRET_KEY_BASE=$(cat "$CFGD/base")
+export SECRET_KEY_BASE
 
 _build/prod/rel/bulls/bin/bulls start
-
-# TODO: Add a systemd service file
-#       to start your app on system boot.
-
