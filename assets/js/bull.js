@@ -21,7 +21,7 @@ export default function Bull(props) {
       cow: 0
     },
     guesses: [],
-    gameActive: false 
+    gameActive: true 
   })
   const [curInput, setCurInput] = useState("");
   let {bullCow, guesses, gameActive} = state;
@@ -32,7 +32,6 @@ export default function Bull(props) {
 
   const resetGame = () => {
     ch_reset();
-    setNumGuesses(8);
     setCurInput("");
   };
 
