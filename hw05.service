@@ -3,8 +3,8 @@ Description=HW05 Server-Side Game Logic
 
 [Service]
 Type=simple
-User=practice
-Group=practice
+User=hw05
+Group=hw05
 Restart=on-failure
 Environment=MIX_ENV=prod
 Environment=PORT=4791
