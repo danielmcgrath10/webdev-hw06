@@ -23,7 +23,6 @@ export default function Bull(props) {
     guesses: [],
     gameActive: false 
   })
-  const [numGuesses, setNumGuesses] = useState(8);
   const [curInput, setCurInput] = useState("");
   let {bullCow, guesses, gameActive} = state;
 
@@ -62,19 +61,17 @@ export default function Bull(props) {
   };
 
   const checkWin = () => {
-    if (numGuesses > 0 && bullCow.bull < 4) {
-      if (
-        _.isEmpty(curInput) ||
-        curInput.length !== 4 || 
-        guesses.includes(curInput) ||
-        !isValid()
-      ) {
-        toast.error("Invalid Input")
-        return;
-      }
-      ch_push({guess: curInput});
-      setCurInput("");
+    if (
+      _.isEmpty(curInput) ||
+      curInput.length !== 4 || 
+      guesses.includes(curInput) ||
+      !isValid()
+    ) {
+      toast.error("Invalid Input")
+      return;
     }
+    ch_push({guess: curInput});
+    setCurInput(""); 
   };
 
   const getTableData = () => {
@@ -124,7 +121,7 @@ export default function Bull(props) {
               </Row>
             </>
           :
-            numGuesses == 8 ?
+            guesses.length == 8 ?
               <>
                 <Row>
                   You Are Out of Guesses, Please Press the Reset Button Below
