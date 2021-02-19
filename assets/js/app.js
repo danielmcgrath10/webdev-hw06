@@ -14,14 +14,10 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 //     import socket from "./socket"
 //
 import "phoenix_html";
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 import $ from "jquery";
 import Popper from "popper.js";
-import Bull from './bull';
-import socket from "./socket";
+import Bull from "./bull";
 
-ReactDOM.render(
-    <Bull />,
-  document.getElementById('root')
-);
+ReactDOM.render(<Bull />, document.getElementById("root"));

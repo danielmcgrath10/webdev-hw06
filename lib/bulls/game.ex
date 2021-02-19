@@ -5,9 +5,9 @@ defmodule Bulls.Game do
           guesses: [],
           gameActive: true
         }
-      end
-    
-      def guess(st, guess) do
+    end
+
+    def guess(st, guess) do
         cond do
             st.gameActive == false ->
                 st
@@ -18,9 +18,9 @@ defmodule Bulls.Game do
             true -> 
                 %{st | guesses: st.guesses ++ [guess]}
         end
-      end
+    end
 
-      def check(guess, str, index, bulls, cows) do
+    def check(guess, str, index, bulls, cows) do
         if(index < Enum.count(guess)) do
             l1 = Enum.at(guess, index)
             c1 = Enum.at(str, index)
@@ -35,9 +35,9 @@ defmodule Bulls.Game do
         else
             {bulls, cows}
         end
-      end
-    
-      def view(st) do
+    end
+
+    def view(st) do
         if st.gameActive == true do
             num = st.target
             guess = Enum.at(st.guesses, Enum.count(st.guesses) - 1)
@@ -76,9 +76,9 @@ defmodule Bulls.Game do
                 gameActive: false
             }
         end
-      end
+    end
 
-      def random_num do
+    def random_num do
         Enum.join(Enum.take(Enum.shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]), 4));
-      end
+    end
 end

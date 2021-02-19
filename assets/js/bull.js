@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import "../css/bull.css";
 import {
@@ -10,21 +10,21 @@ import {
   Row,
   Table,
 } from "react-bootstrap";
-import { ch_join, ch_push, ch_reset } from './socket';
-import { ToastContainer, toast } from 'react-toastify';
-  import 'react-toastify/dist/ReactToastify.css';
+import { ch_join, ch_push, ch_reset } from "./socket";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Bull(props) {
   const [state, setState] = useState({
     bullCow: {
       bull: 0,
-      cow: 0
+      cow: 0,
     },
     guesses: [],
-    gameActive: true 
-  })
+    gameActive: true,
+  });
   const [curInput, setCurInput] = useState("");
-  let {bullCow, guesses, gameActive} = state;
+  let { bullCow, guesses, gameActive } = state;
 
   useEffect(() => {
     ch_join(setState);
@@ -62,15 +62,15 @@ export default function Bull(props) {
   const checkWin = () => {
     if (
       _.isEmpty(curInput) ||
-      curInput.length !== 4 || 
+      curInput.length !== 4 ||
       guesses.includes(curInput) ||
       !isValid()
     ) {
-      toast.error("Invalid Input")
+      toast.error("Invalid Input");
       return;
     }
-    ch_push({guess: curInput});
-    setCurInput(""); 
+    ch_push({ guess: curInput });
+    setCurInput("");
   };
 
   const getTableData = () => {
@@ -84,68 +84,64 @@ export default function Bull(props) {
   return (
     <div className="App">
       <Container id={"game-container"} fluid>
-        {
-          gameActive ? 
-            <>
-              <Row id={"display-row"}>
-                <Col>Result: {`${bullCow.bull} bulls and ${bullCow.cow} cows`}</Col>
-                <Col>
-                  <Table striped bordered size="sm">
-                    <thead>
-                      <tr>
-                        <th>Guesses</th>
-                      </tr>
-                    </thead>
-                    <tbody>{getTableData()}</tbody>
-                  </Table>
-                </Col>
-              </Row>
-              <Row id={"input-row"}>
-                <InputGroup className={"mb-2"}>
-                  <FormControl
-                    type={"number"}
-                    onKeyPress={handleKeyPress}
-                    onInput={handleInput}
-                    value={curInput}
-                  />
-                  <InputGroup.Append>
-                    <Button onClick={checkWin} variant={"outline-secondary"}>
-                      Enter
-                    </Button>
-                    <Button onClick={resetGame} variant={"outline-secondary"}>
-                      Reset
-                    </Button>
-                  </InputGroup.Append>
-                </InputGroup>
-              </Row>
-            </>
-          :
-            guesses.length == 8 ?
-              <>
-                <Row>
-                  You Are Out of Guesses, Please Press the Reset Button Below
-                </Row>
-                <Row>
-                  :`(
-                </Row>
-                <Row>
-                    <Button onClick={resetGame} variant={"outline-secondary"}>
-                      Reset
-                    </Button>
-                </Row>
-              </>
-            :
-              <>
-                <Row>
-                  YOU WIN!!!!
-                </Row>
-                <Row>
+        {gameActive ? (
+          <>
+            <Row id={"display-row"}>
+              <Col>
+                Result: {`${bullCow.bull} bulls and ${bullCow.cow} cows`}
+              </Col>
+              <Col>
+                <Table striped bordered size="sm">
+                  <thead>
+                    <tr>
+                      <th>Guesses</th>
+                    </tr>
+                  </thead>
+                  <tbody>{getTableData()}</tbody>
+                </Table>
+              </Col>
+            </Row>
+            <Row id={"input-row"}>
+              <InputGroup className={"mb-2"}>
+                <FormControl
+                  type={"number"}
+                  onKeyPress={handleKeyPress}
+                  onInput={handleInput}
+                  value={curInput}
+                />
+                <InputGroup.Append>
+                  <Button onClick={checkWin} variant={"outline-secondary"}>
+                    Enter
+                  </Button>
                   <Button onClick={resetGame} variant={"outline-secondary"}>
                     Reset
                   </Button>
-              </Row>
-            </>
-        }
+                </InputGroup.Append>
+              </InputGroup>
+            </Row>
+          </>
+        ) : guesses.length == 8 ? (
+          <>
+            <Row>
+              You Are Out of Guesses, Please Press the Reset Button Below
+            </Row>
+            <Row>:`(</Row>
+            <Row>
+              <Button onClick={resetGame} variant={"outline-secondary"}>
+                Reset
+              </Button>
+            </Row>
+          </>
+        ) : (
+          <>
+            <Row>YOU WIN!!!!</Row>
+            <Row>
+              <Button onClick={resetGame} variant={"outline-secondary"}>
+                Reset
+              </Button>
+            </Row>
+          </>
+        )}
       </Container>
       <ToastContainer
         position="top-right"

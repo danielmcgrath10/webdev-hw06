@@ -6,9 +6,9 @@
 //
 // Pass the token on params as below. Or remove it
 // from the params if you are not using authentication.
-import {Socket} from "phoenix";
+import { Socket } from "phoenix";
 
-let socket = new Socket("/socket", {params: {token: ""}});
+let socket = new Socket("/socket", { params: { token: "" } });
 socket.connect();
 
 let channel = socket.channel("game:1", {});
@@ -16,7 +16,7 @@ let channel = socket.channel("game:1", {});
 let state = {
   bullCow: {
     bull: 0,
-    cow: 0
+    cow: 0,
   },
   guesses: [],
 };
@@ -37,21 +37,28 @@ export function ch_join(cb) {
 }
 
 export function ch_push(guess) {
-  channel.push("guess", guess)
-         .receive("ok", state_update)
-         .receive("error", resp => { console.log("Unable to push", resp) });
+  channel
+    .push("guess", guess)
+    .receive("ok", state_update)
+    .receive("error", (resp) => {
+      console.log("Unable to push", resp);
+    });
 }
 
 export function ch_reset() {
-  channel.push("reset", {})
-         .receive("ok", state_update)
-         .receive("error", resp => {
-           console.log("Unable to push", resp)
-         });
+  channel
+    .push("reset", {})
+    .receive("ok", state_update)
+    .receive("error", (resp) => {
+      console.log("Unable to push", resp);
+    });
 }
 
-channel.join()
-       .receive("ok", state_update)
-       .receive("error", resp => { console.log("Unable to join", resp) });
+channel
+  .join()
+  .receive("ok", state_update)
+  .receive("error", (resp) => {
+    console.log("Unable to join", resp);
+  });
 
-export default socket
+export default socket;
