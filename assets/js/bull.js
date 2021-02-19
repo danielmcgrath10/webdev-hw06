@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import _ from "lodash";
-import "../css/bull.scss";
+import "../css/bull.css";
 import {
   Button,
   Col,

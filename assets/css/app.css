@@ -1,7 +1,4 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
-// @import "~react-notifications/lib/notifications.css";
-@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 /* Alerts and form errors */
 body{
