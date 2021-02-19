@@ -8,9 +8,9 @@ Daniel McGrath
 hw05.danny-mcgrath.com
 
 3. Which parts of this assignment did you have trouble with, if any?
-I had a little trouble with the manual setup of the server side deploy/start 
-and a little bit with the server-side logic. There was an issue with the node
-version I was using and node-sass/sass-loader.
+I had a little trouble with the manual setup of the server side 
+deploy/start and a little bit with the server-side logic. There was 
+an issue with the node version I was using and node-sass/sass-loader.
 
 4. What part of your application state is on the server?
 The guesses, target number, and gameActive state.
