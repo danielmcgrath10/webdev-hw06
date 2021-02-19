@@ -21,10 +21,11 @@ export default function Bull(props) {
       cow: 0
     },
     guesses: [],
+    gameActive: false 
   })
   const [numGuesses, setNumGuesses] = useState(8);
   const [curInput, setCurInput] = useState("");
-  let {bullCow, guesses} = state;
+  let {bullCow, guesses, gameActive} = state;
 
   useEffect(() => {
     ch_join(setState);
@@ -61,12 +62,9 @@ export default function Bull(props) {
   };
 
   const checkWin = () => {
-    console.log(state);
     if (numGuesses > 0 || bullCow.bull < 4) {
       if (
         _.isEmpty(curInput) ||
-        curInput < 1000 ||
-        curInput > 9999 ||
         !isValid()
       ) {
         NotificationManager.error("Needs to be a Valid Input");
@@ -92,39 +90,69 @@ export default function Bull(props) {
   return (
     <div className="App">
       <Container id={"game-container"} fluid>
-        <Row id={"display-row"}>
-          <Col>Result: {`${bullCow.bull} bulls and ${bullCow.cow} cows`}</Col>
-          <Col>
-            <Table striped bordered size="sm">
-              <thead>
-                <tr>
-                  <th>Guesses</th>
-                </tr>
-              </thead>
-              <tbody>{getTableData()}</tbody>
-            </Table>
-          </Col>
-        </Row>
-        <Row id={"input-row"}>
-          <InputGroup className={"mb-2"}>
-            <FormControl
-              type={"number"}
-              onKeyPress={handleKeyPress}
-              onInput={handleInput}
-              value={curInput}
-            />
-            <InputGroup.Append>
-              <Button onClick={checkWin} variant={"outline-secondary"}>
-                Enter
-              </Button>
-              <Button onClick={resetGame} variant={"outline-secondary"}>
-                Reset
-              </Button>
-            </InputGroup.Append>
-          </InputGroup>
-        </Row>
+        {
+          gameActive ? 
+            <>
+              <Row id={"display-row"}>
+                <Col>Result: {`${bullCow.bull} bulls and ${bullCow.cow} cows`}</Col>
+                <Col>
+                  <Table striped bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>Guesses</th>
+                      </tr>
+                    </thead>
+                    <tbody>{getTableData()}</tbody>
+                  </Table>
+                </Col>
+              </Row>
+              <Row id={"input-row"}>
+                <InputGroup className={"mb-2"}>
+                  <FormControl
+                    type={"number"}
+                    onKeyPress={handleKeyPress}
+                    onInput={handleInput}
+                    value={curInput}
+                  />
+                  <InputGroup.Append>
+                    <Button onClick={checkWin} variant={"outline-secondary"}>
+                      Enter
+                    </Button>
+                    <Button onClick={resetGame} variant={"outline-secondary"}>
+                      Reset
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Row>
+            </>
+          :
+            numGuesses.length == 8 ?
+              <>
+                <Row>
+                  You Are Out of Guesses, Please Press the Reset Button Below
+                </Row>
+                <Row>
+                  :`(
+                </Row>
+                <Row>
+                    <Button onClick={resetGame} variant={"outline-secondary"}>
+                      Reset
+                    </Button>
+                </Row>
+              </>
+            :
+              <>
+                <Row>
+                  YOU WIN!!!!
+                </Row>
+                <Row>
+                  <Button onClick={resetGame} variant={"outline-secondary"}>
+                    Reset
+                  </Button>
+              </Row>
+            </>
+        }
       </Container>
-      <NotificationContainer />
     </div>
   );
 }

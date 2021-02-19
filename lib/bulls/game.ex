@@ -9,10 +9,10 @@ defmodule Bulls.Game do
     
       def guess(st, guess) do
         cond do
-            Enum.count(st.guesses) == 8 ->
-                raise "No more guesses allowed"
             st.gameActive == false ->
                 st
+            Enum.count(st.guesses) >= 8 ->
+                %{st | gameActive: false}
             guess == st.target -> 
                 %{st | guesses: MapSet.put(st.guesses, guess), gameActive: false}
             true -> 
@@ -41,38 +41,30 @@ defmodule Bulls.Game do
         if st.gameActive == true do
             num = st.target
             guess = Enum.at(st.guesses, Enum.count(st.guesses) - 1)
-            if num == guess do
+            checkList = String.graphemes(num)
+            bulls = []
+            cows = []
+            if !Enum.empty?(st.guesses) do
+                IO.inspect checkList
+                IO.inspect guess
+                {bulls, cows} = check(String.graphemes(guess), String.graphemes(num), 0, bulls, cows)
                 %{
                     bullCow: %{
-                        bull: 4,
-                        cow: 0
+                        bull: Enum.count(bulls),
+                        cow: Enum.count(cows)
                     },
-                    guesses: MapSet.to_list(st.guesses)
+                    guesses: MapSet.to_list(st.guesses),
+                    gameActive: true
                 }
-            else 
-                checkList = String.graphemes(num)
-                bulls = []
-                cows = []
-                if !Enum.empty?(st.guesses) do
-                    IO.inspect checkList
-                    IO.inspect guess
-                    {bulls, cows} = check(String.graphemes(guess), String.graphemes(num), 0, bulls, cows)
-                    %{
-                        bullCow: %{
-                            bull: Enum.count(bulls),
-                            cow: Enum.count(cows)
-                        },
-                        guesses: MapSet.to_list(st.guesses)
-                    }
-                else
-                    %{
-                        bullCow: %{
-                            bull: Enum.count(bulls),
-                            cow: Enum.count(cows)
-                        },
-                        guesses: MapSet.to_list(st.guesses)
-                    }
-                end
+            else
+                %{
+                    bullCow: %{
+                        bull: Enum.count(bulls),
+                        cow: Enum.count(cows)
+                    },
+                    guesses: MapSet.to_list(st.guesses),
+                    gameActive: true
+                }
             end
         else
             %{
@@ -80,7 +72,8 @@ defmodule Bulls.Game do
                     bull: 4,
                     cow: 0
                 },
-                guesses: MapSet.to_list(st.guesses)
+                guesses: MapSet.to_list(st.guesses),
+                gameActive: false
             }
         end
       end
