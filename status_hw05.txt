@@ -1,0 +1,29 @@
+Please fill in answers to the questions below:
+
+
+1. What's your name?
+Daniel McGrath
+
+2. What hostname did you deploy to?
+hw05.danny-mcgrath.com
+
+3. Which parts of this assignment did you have trouble with, if any?
+I had a little trouble with the manual setup of the server side deploy/start 
+and a little bit with the server-side logic. There was an issue with the node
+version I was using and node-sass/sass-loader.
+
+4. What part of your application state is on the server?
+The guesses, target number, and gameActive state.
+
+5. What part of your application state, if any, is in the browser?
+The input field is a controlled input so that state is in the browser.
+
+And here's a list of tasks for grading comments. Just leave this here:
+ - Task 1
+ - Task 2
+ - Task 3
+ - Task 4
+ - Task 5
+ - Task 6
+ - Task 7
+ - Task 8
