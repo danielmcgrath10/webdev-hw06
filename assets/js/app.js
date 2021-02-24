@@ -18,6 +18,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import $ from "jquery";
 import Popper from "popper.js";
-import Bull from "./bull";
+import {BrowserRouter} from "react-router-dom";
+import MainRouter from "./mainRouter";
 
-ReactDOM.render(<Bull />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <MainRouter />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
