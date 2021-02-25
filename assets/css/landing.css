@@ -5,3 +5,15 @@
     justify-content: center;
     align-items: center;
 }
+
+#landing-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-card-contents {
+    margin: 5px;
+    width: 90%;
+}

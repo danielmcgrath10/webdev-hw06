@@ -16,10 +16,6 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 75%;
-    border: 1px solid grey;
-    border-radius: 10px;
-    box-shadow: 2px 2px 5px lightgrey;
     padding: 10px;
   }
   
