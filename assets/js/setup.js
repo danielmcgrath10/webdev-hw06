@@ -1,4 +1,8 @@
 //imports
+import React, {useState} from "react";
+import milligram;
+import {Table} from "react-bootstrap";
+import socket from "./socket.js";
 
 function SetupPage() {
 
@@ -12,8 +16,21 @@ function SetupPage() {
     lastWinners: [],
   });
 
+    //let channel = socket.channel("game:" + name, {});
+
+  // const state_update = (st) => {
+  //   setState(st);
+  // };
+
   function playerClick(ev) {
-    ch_push({playerBool: ev.checked});
+    //ch_push({playerBool: ev.checked});
+    /* This might go in socket.js
+    channel.push("player", ev.checked)
+           .receive("ok", state_update)
+           .receive("error", (resp) => {
+             console.log("unable to update player status", resp)
+           });
+     */
   }
 
   function showReadyCheck() {
@@ -25,7 +42,33 @@ function SetupPage() {
   }
 
   function readyClick(ev) {
-    ch_push({readyBool: ev.checked});
+    //ch_push({readyBool: ev.checked});
+    /* This might go in socket.js
+    channel.push("ready", ev.checked)
+           .receive("ok", state_update)
+           .receive("error", (resp) => {
+             console.log("unable to update ready status", resp)
+           });
+     */
+  }
+      
+  function getPlayers() {
+    return state.players.map((element, index) => (
+      <tr>
+        <td>{element}</td>
+        <td>{state.readys.includes(element)}</td>
+      </tr>
+    ))
+  }
+
+  function getScoreboard() {
+    return state.users.map((element, index) => (
+      <tr key={index}>
+        <td>{element.name}</td>
+        <td>{element.wins}</td>
+        <td>{element.losses}</td>
+      </tr>
+    ))
   }
 
   let displayWinners = "Welcome to Bulls and Cows";
@@ -60,7 +103,15 @@ function SetupPage() {
               <h6>Players</h6>
             </div>
           </div>
-          //TODO: list players and readiness
+          <Table>
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Ready?</th>
+              </tr>
+            </thead>
+            <tbody>{getPlayers()}</tbody>
+          </Table>
         </div>
         <div className="column">
           <div className="row">
@@ -68,7 +119,16 @@ function SetupPage() {
               <h6>Scoreboard</h6>
             </div>
           </div>
-          //TODO: display scoreboard
+          <Table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Wins</th>
+                <th>Losses</th>
+              </tr>
+            </thead>
+            <tbody>{getScoreboard()}</tbody>
+          </Table>
         </div>
       </div>
     </div>
