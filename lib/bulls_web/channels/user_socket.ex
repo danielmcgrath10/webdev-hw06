@@ -3,6 +3,7 @@ defmodule BullsWeb.UserSocket do
 
   ## Channels
   # channel "room:*", BullsWeb.RoomChannel
+  channel "game:*", BullsWeb.GameChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -32,6 +33,4 @@ defmodule BullsWeb.UserSocket do
   # Returning `nil` makes this socket anonymous.
   @impl true
   def id(_socket), do: nil
-
-  channel "game:*", BullsWeb.GameChannel
 end

@@ -1,0 +1,19 @@
+.landing-screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#landing-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-card-contents {
+    margin: 5px;
+    width: 90%;
+}
