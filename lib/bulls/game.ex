@@ -4,10 +4,16 @@ defmodule Bulls.Game do
           target: random_num(),
           guesses: [],
           gameActive: true,
-          users: [],
-          players: [],
-          readys: [],
-          lastWinners: [],
+        }
+    end
+    
+    def newSetup do
+        %{
+            gameActive: false,
+            users: [],
+            players: [],
+            readys: [],
+            lastWinners: [],
         }
     end
 
