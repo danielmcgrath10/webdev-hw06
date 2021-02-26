@@ -49,13 +49,25 @@ defmodule Bulls.GameServer do
     end
   
     def handle_call({:reset, name}, _from, game) do
-      game = Game.new
+      game = Game.newGame(game)
       BackupAgent.put(name, game)
       {:reply, game, game}
     end
   
     def handle_call({:guess, name, letter}, _from, game) do
       game = Game.guess(game, letter)
+      BackupAgent.put(name, game)
+      {:reply, game, game}
+    end
+    
+    def handle_call({:player, name, playerBool}, _from, game) do
+      game = Game.player(game, playerBool)
+      BackupAgent.put(name, game)
+      {:reply, game, game}
+    end
+    
+    def handle_call({:ready, name, readyBool}, _from, game) do
+      game = Game.ready(game, readyBool)
       BackupAgent.put(name, game)
       {:reply, game, game}
     end
