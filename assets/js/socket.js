@@ -11,4 +11,54 @@ import { Socket } from "phoenix";
 let socket = new Socket("/socket", { params: { token: "" } });
 socket.connect();
 
+let state = {
+  bullCow: {
+    bull: 0,
+    cow: 0,
+  },
+  guesses: [],
+};
+
+let callback = null;
+
+export function state_update(st) {
+  console.log("New state", st);
+  state = st;
+  if (callback) {
+    callback(st);
+  }
+}
+
+export function ch_join(cb) {
+  callback = cb;
+  callback(state);
+}
+
+export function ch_push(channel, guess) {
+  channel
+    .push("guess", guess)
+    .receive("ok", state_update)
+    .receive("error", (resp) => {
+      console.log("Unable to push", resp);
+    });
+}
+
+export function ch_reset(channel) {
+  channel
+    .push("reset", {})
+    .receive("ok", state_update)
+    .receive("error", (resp) => {
+      console.log("Unable to push", resp);
+    });
+}
+
+export function ch_init(channel) {
+    channel
+    .join()
+    .receive("ok", state_update)
+    .receive("error", (resp) => {
+        console.log("Unable to join", resp);
+    });
+}
+
 export default socket;
