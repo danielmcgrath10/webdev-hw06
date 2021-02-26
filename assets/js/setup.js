@@ -11,8 +11,8 @@ function SetupPage(props) {
 
   const [state, setState] = useState({
     userName: user,
-    users: [{name: "danny", wins: 2, losses: 2}],
-    players: ["danny"],
+    users: [],
+    players: [],
     readys: [],
     lastWinners: [],
   });
