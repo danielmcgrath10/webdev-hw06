@@ -19,7 +19,18 @@ export default function MainRouter(props) {
               <Landing {...props} setUser={setUser} setName={setName} />
             )}
           />
-          <Route path={"/setup"} render={(props) => <SetupPage name={name} {...props}/>}/>
+          <Route
+            path={"/setup"}
+            render={(props) => (
+              <SetupPage
+                name={name}
+                user={user}
+                setName={setName}
+                setUser={setUser}
+                {...props}
+              />
+            )}
+          />
           <Route
             path={"/multibull"}
             render={(props) => (

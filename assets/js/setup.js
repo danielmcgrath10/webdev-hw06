@@ -1,20 +1,23 @@
 //imports
 import React, {useState} from "react";
-import {Table} from "react-bootstrap";
-import socket from "./socket.js";
+import {Button, ButtonGroup, Col, Container, Row, Table} from "react-bootstrap";
+import socket, { ch_init } from "./socket.js";
+import { useHistory } from "react-router-dom";
+
 
 function SetupPage(props) {
-  const {name } = props;
+  const {name, user, setName, setUser} = props;
+  const history = useHistory();
 
   const [state, setState] = useState({
-    userName: "",
-    users: [],
-    player: false,
-    ready: false,
-    players: [],
+    userName: user,
+    users: [{name: "danny", wins: 2, losses: 2}],
+    players: ["danny"],
     readys: [],
     lastWinners: [],
   });
+  const [btnActive, setBtnActive] = useState(2);
+  let {userName} = state;
 
   let channel = socket.channel("game:" + name, {});
 
@@ -25,19 +28,12 @@ function SetupPage(props) {
   function playerClick(ev) {
     //ch_push({playerBool: ev.checked});
     // This might go in socket.js
+    ch_init(channel);
     channel.push("player", ev.checked)
            .receive("ok", state_update)
            .receive("error", (resp) => {
              console.log("unable to update player status", resp)
            });
-  }
-
-  function showReadyCheck() {
-    if (state.player) {
-      return <p>Ready? <input type="checkbox" id="readyCheck" onClick={readyClick}/></p>;
-    } else {
-      return <p>Observing next game</p>;
-    }
   }
 
   function readyClick(ev) {
@@ -53,9 +49,9 @@ function SetupPage(props) {
       
   function getPlayers() {
     return state.players.map((element, index) => (
-      <tr>
+      <tr key={index}>
         <td>{element}</td>
-        <td>{state.readys.includes(element)}</td>
+        <td>{state.readys.includes(element) ? "Ready":"Observer"}</td>
       </tr>
     ))
   }
@@ -70,6 +66,10 @@ function SetupPage(props) {
     ))
   }
 
+  const handleBtn = (num) => {
+    setBtnActive(num);
+  }
+
   let displayWinners = "Welcome to Bulls and Cows";
 
   if (state.lastWinners.length > 0) {
@@ -77,60 +77,98 @@ function SetupPage(props) {
   }
 
   return (
-    <div className="Setup">
-      <h2>Bulls and Cows Game</h2>
-      <div className="row">
-        <div className="column">
-          <h3>{displayWinners}</h3>
-        </div>
-      </div>
-      <div className="row">
-        <div className="column">
-          <p>User: {state.userName}</p>
-        </div>
-        <div className="column">
-          <p>Playing Next Game? <input type="checkbox" id="playerCheck" onClick={playerClick}/></p>
-        </div>
-        <div className="column">
-          {showReadyCheck()}
-        </div>
-      </div>
-      <div className="row">
-        <div className="column">
-          <div className="row">
-            <div className="column">
-              <h6>Players</h6>
-            </div>
-          </div>
-          <Table>
-            <thead>
-              <tr>
-                <th>Player Name</th>
-                <th>Ready?</th>
-              </tr>
-            </thead>
-            <tbody>{getPlayers()}</tbody>
-          </Table>
-        </div>
-        <div className="column">
-          <div className="row">
-            <div className="column">
-              <h6>Scoreboard</h6>
-            </div>
-          </div>
-          <Table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Wins</th>
-                <th>Losses</th>
-              </tr>
-            </thead>
-            <tbody>{getScoreboard()}</tbody>
-          </Table>
-        </div>
-      </div>
-    </div>
+    <Container>
+      <Row style={{paddingBottom: "10px"}}>
+        <Col md={"auto"}>
+          <Button
+            variant={"outline-danger"}
+            onClick={() => {
+              history.push("/home")
+              setName(undefined);
+              setUser(undefined);
+              
+            }}
+          >
+            Cancel
+          </Button>
+        </Col>
+        <Col xs={10}><h2>Bulls and Cows Game</h2></Col>
+      </Row>
+      <Row style={{paddingBottom: "15px"}}>
+        <Col><h4>User: {userName}</h4></Col>
+        <Col>
+          <ButtonGroup>
+            <Button
+              variant={"outline-primary"}
+              active={btnActive == 1}
+              onClick={() => handleBtn(1)}
+            >
+              Playing
+            </Button>
+            <Button
+              variant={"outline-primary"}
+              active={btnActive == 2}
+              onClick={() => handleBtn(2)}
+            >
+              Observing
+            </Button>
+          </ButtonGroup>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Row>
+            <Col><h3>Current Players</h3></Col>
+          </Row>
+          <Row>
+            <Col>
+              <Table striped bordered>
+                <thead>
+                  <tr>
+                    <th>
+                      Player Name
+                    </th>
+                    <th>
+                      Ready?
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getPlayers()}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Col>
+        <Col>
+          <Row>
+            <Col><h3>Scoreboard</h3></Col>
+          </Row>
+          <Row>
+            <Col>
+              <Table striped bordered>
+                <thead>
+                  <tr>
+                    <th>
+                      Player Name
+                    </th>
+                    <th>
+                      Wins
+                    </th>
+                    <th>
+                      Loss
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getScoreboard()}
+                </tbody>
+              </Table>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

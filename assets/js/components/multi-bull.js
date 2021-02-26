@@ -104,9 +104,7 @@ export default function MultiBullGame(props) {
             <Button
             variant={"outline-primary"}
             onClick={() => {
-                history.push("/home");
-                setName(undefined);
-                setUser(undefined);
+                history.push("/setup");
             }}
             >
             Cancel
