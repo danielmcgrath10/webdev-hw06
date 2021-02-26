@@ -1,19 +1,19 @@
 defmodule Bulls.Game do
     def new do 
-        %{ st |
-          gameActive: true,
-          target: random_num(),
-          guesses: [],
-        }
-    end
-    
-    def newSetup do
         %{
             gameActive: false,
             users: [],
             players: [],
             readys: [],
             lastWinners: [],
+        }
+    end
+    
+    def newGame(st) do
+        %{ st |
+          gameActive: true,
+          target: random_num(),
+          guesses: [],
         }
     end
 
