@@ -3,20 +3,35 @@ import "../css/landing.css";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Landing from "./landing";
 import Bull from "./bull";
-import {ToastContainer} from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import MultiBull from "./multibull";
 
 export default function MainRouter(props) {
   const [name, setName] = useState(undefined);
+  const [user, setUser] = useState(undefined);
   return (
     <div className={"App"}>
       <Suspense>
         <Switch>
           <Route
             path={"/home"}
-            render={(props) => <Landing {...props} setName={setName} />}
+            render={(props) => (
+              <Landing {...props} setUser={setUser} setName={setName} />
+            )}
           />
           {/* <Route path={"/loading"} render={(props) => <Loading {...props}/>}/> */}
-          <Route path={"/multibull"} render={(props) => <Bull {...props} />} />
+          <Route
+            path={"/multibull"}
+            render={(props) => (
+              <MultiBull
+                {...props}
+                name={name}
+                setName={setName}
+                user={user}
+                setUser={setUser}
+              />
+            )}
+          />
           <Route
             path={"/bull"}
             render={(props) => (

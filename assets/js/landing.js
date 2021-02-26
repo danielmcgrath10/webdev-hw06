@@ -15,15 +15,18 @@ import {toast} from "react-toastify";
 
 export default function Landing(props) {
   const history = useHistory();
-  const {setName} = props;
+  const {setName, setUser} = props;
   const [activeBtn, setActiveBtn] = useState(0);
   const [gameName, setGameName] = useState("");
+  const [gameUser, setGameUser] = useState("");
 
   const handleSubmit = () => {
     if(!_.isEmpty(gameName)){
       setName(gameName);
       if(activeBtn == 2) {
-          
+        setName(gameName);
+        setUser(gameUser);
+        history.push("/multibull");
       } else if(activeBtn == 1) {
         console.log(gameName);
         setName(gameName);
@@ -67,6 +70,8 @@ export default function Landing(props) {
                 className={"landing-card-contents"}
                 type={"text"}
                 placeholder={"Username"}
+                value={gameUser}
+                onInput={(e) => setGameUser(e.target.value)}
               />
             ) : null}
             <Button
