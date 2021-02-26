@@ -24,12 +24,10 @@ export default function Landing(props) {
     if(!_.isEmpty(gameName)){
       setName(gameName);
       if(activeBtn == 2) {
-        setName(gameName);
         setUser(gameUser);
-        history.push("/multibull");
+        history.push("/setup");
       } else if(activeBtn == 1) {
         console.log(gameName);
-        setName(gameName);
         history.push("/bull");
       } 
     } else {

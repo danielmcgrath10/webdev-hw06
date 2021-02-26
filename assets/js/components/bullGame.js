@@ -12,11 +12,12 @@ import {
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import socket from "../socket";
+import socket, { ch_init } from "../socket";
 import { useHistory } from "react-router-dom";
+import {ch_join, ch_push, ch_reset, state_update} from "../socket";
 
 export default function BullGame(props) {
-  const { name, setName, user, setUser } = props;
+  const { name, setName } = props;
   const history = useHistory();
 
   const [state, setState] = useState({
@@ -31,51 +32,16 @@ export default function BullGame(props) {
   const [curInput, setCurInput] = useState("");
   let channel = socket.channel("game:" + name, {});
   let { bullCow, guesses, gameActive } = state;
-  let callback = null;
-
-  const state_update = (st) => {
-    setState(st);
-    console.log(st);
-  };
-
-  function ch_join(cb) {
-    callback = cb;
-    callback(state);
-  }
-
-  const joinGame = () => {
-    channel
-      .join()
-      .receive("ok", state_update)
-      .receive("error", (resp) => {
-        console.log("Unable to join", resp);
-      });
-      if(user){
-        channel.push("login", {name: user})
-            .receive("ok", state_update)
-            .receive("error", resp => {
-            console.log("Unable to push", resp)
-            });
-    }
-  };
 
   useEffect(() => {
+    ch_init(channel);
     ch_join(setState);
-    if (!gameActive) {
-      joinGame();
-    }
     channel.on("view", state_update)
-    console.log("state", state);
-  }, []);
+      }, []);
 
   const resetGame = () => {
-    joinGame();
-    channel
-      .push("reset", {})
-      .receive("ok", state_update)
-      .receive("error", (resp) => {
-        console.log("Unable to push", resp);
-      });
+    ch_init(channel);
+    ch_reset(channel);
     setCurInput("");
   };
 
@@ -113,13 +79,8 @@ export default function BullGame(props) {
       toast.error("Invalid Input");
       return;
     }
-    joinGame();
-    channel
-      .push("guess", { guess: curInput })
-      .receive("ok", state_update)
-      .receive("error", (resp) => {
-        console.log("Unable to push", resp);
-      });
+    ch_init(channel);
+    ch_push(channel, {guess: curInput});
     setCurInput("");
   };
 
@@ -145,7 +106,6 @@ export default function BullGame(props) {
             onClick={() => {
                 history.push("/home");
                 setName(undefined);
-                setUser(undefined);
             }}
             >
             Cancel
