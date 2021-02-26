@@ -8,6 +8,8 @@ defmodule Bulls.Game do
     end
 
     def guess(st, guess) do
+        IO.inspect st
+        IO.inspect guess
         cond do
             st.gameActive == false ->
                 st
@@ -37,7 +39,7 @@ defmodule Bulls.Game do
         end
     end
 
-    def view(st) do
+    def view(st, user) do
         if st.gameActive == true do
             num = st.target
             guess = Enum.at(st.guesses, Enum.count(st.guesses) - 1)
@@ -54,7 +56,8 @@ defmodule Bulls.Game do
                         cow: Enum.count(cows)
                     },
                     guesses: st.guesses,
-                    gameActive: true
+                    gameActive: true,
+                    name: user
                 }
             else
                 %{
@@ -63,7 +66,8 @@ defmodule Bulls.Game do
                         cow: Enum.count(cows)
                     },
                     guesses: st.guesses,
-                    gameActive: true
+                    gameActive: true,
+                    name: user
                 }
             end
         else
@@ -73,7 +77,8 @@ defmodule Bulls.Game do
                     cow: 0
                 },
                 guesses: st.guesses,
-                gameActive: false
+                gameActive: false,
+                name: user
             }
         end
     end
