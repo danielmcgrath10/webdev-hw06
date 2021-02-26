@@ -36,6 +36,14 @@ defmodule Bulls.GameServer do
     def guess(name, letter) do
       GenServer.call(reg(name), {:guess, name, letter})
     end
+    
+    def player(name, playerBool) do
+      GenServer.call(reg(name), {:player, name, playerBool})
+    end
+    
+    def ready(name, readyBool) do
+      GenServer.call(reg(name), {:ready, name, readyBool})
+    end
   
     def peek(name) do
       GenServer.call(reg(name), {:peek, name})
