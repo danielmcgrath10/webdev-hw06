@@ -1,9 +1,9 @@
 defmodule Bulls.Game do
     def new do 
-        %{
+        %{ st |
+          gameActive: true,
           target: random_num(),
           guesses: [],
-          gameActive: true,
         }
     end
     
