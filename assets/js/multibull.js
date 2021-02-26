@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import _ from "lodash";
 import "../css/bull.css";
-import BullGame from "./components/bullGame";
+import MultiBullGame from "./components/multi-bull";
 
 export default function MultiBull(props) {
 
   return (
     <div className="App">
-      <BullGame {...props}/>
+      <MultiBullGame {...props}/>
     </div>
   );
 }

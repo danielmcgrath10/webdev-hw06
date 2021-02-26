@@ -14,10 +14,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import socket, { ch_init } from "../socket";
 import { useHistory } from "react-router-dom";
-import {ch_join, ch_push, ch_reset, state_update} from "../socket";
 
-export default function BullGame(props) {
-  const { name, setName } = props;
+export default function MultiBullGame(props) {
+  const { name, setName, user, setUser } = props;
   const history = useHistory();
 
   const [state, setState] = useState({
@@ -32,12 +31,13 @@ export default function BullGame(props) {
   const [curInput, setCurInput] = useState("");
   let channel = socket.channel("game:" + name, {});
   let { bullCow, guesses, gameActive } = state;
+  let callback = null;
 
   useEffect(() => {
     ch_init(channel);
     ch_join(setState);
     channel.on("view", state_update);
-      }, []);
+  }, []);
 
   const resetGame = () => {
     ch_init(channel);
@@ -106,6 +106,7 @@ export default function BullGame(props) {
             onClick={() => {
                 history.push("/home");
                 setName(undefined);
+                setUser(undefined);
             }}
             >
             Cancel
