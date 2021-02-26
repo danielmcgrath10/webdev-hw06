@@ -1,10 +1,10 @@
 import React, { Suspense, useState } from "react";
-import "../css/landing.css";
 import { Switch, Route, Redirect } from "react-router-dom";
 import Landing from "./landing";
 import Bull from "./bull";
 import { ToastContainer } from "react-toastify";
 import MultiBull from "./multibull";
+import SetupPage from "./setup";
 
 export default function MainRouter(props) {
   const [name, setName] = useState(undefined);
@@ -19,7 +19,7 @@ export default function MainRouter(props) {
               <Landing {...props} setUser={setUser} setName={setName} />
             )}
           />
-          {/* <Route path={"/loading"} render={(props) => <Loading {...props}/>}/> */}
+          <Route path={"/setup"} render={(props) => <SetupPage name={name} {...props}/>}/>
           <Route
             path={"/multibull"}
             render={(props) => (

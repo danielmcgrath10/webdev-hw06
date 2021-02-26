@@ -7,6 +7,7 @@ defmodule Bulls.Setup do
       readys: [],
       lastWinners: [],
     }
+  end
 
   def newUser(st, name) do
     %{ st |
