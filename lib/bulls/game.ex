@@ -7,7 +7,8 @@ defmodule Bulls.Game do
             readys: [],
             lastWinners: [],
             target: 0,
-            guesses: []
+            guesses: [],
+            nextGuesses: []
         }
     end
     
@@ -16,22 +17,22 @@ defmodule Bulls.Game do
           gameActive: true,
           target: random_num(),
           guesses: [],
+          nextGuesses: []
         }
     end
 
-    def guess(st, guess) do
-        IO.inspect st
-        IO.inspect guess
-        cond do
-            st.gameActive == false ->
-                st
-            Enum.count(st.guesses) >= 8 ->
-                %{st | gameActive: false}
-            guess == st.target -> 
-                %{st | guesses: st.guesses ++ [guess], gameActive: false}
-            true -> 
-                %{st | guesses: st.guesses ++ [guess]}
-        end
+    def guess(st, user, guess) do
+        %{
+            st | nextGuesses = st.nextGuesses ++ [newGuess(st, user, guess)]
+        }
+    end
+
+    def newGuess(st, user, guess) do
+        %{
+            name: user,
+            guess: guess,
+            eval: check(String.graphemes(guess), String.graphemes(st.target), 0, [], []),
+        }
     end
 
     def check(guess, str, index, bulls, cows) do
@@ -82,6 +83,7 @@ defmodule Bulls.Game do
 
     def afterGame(st, winners) do
         %{
+            gameActive: false,
             users: updateScoreboard(st, winners),
             players: [],
             readys: [],
@@ -116,36 +118,36 @@ defmodule Bulls.Game do
         List.replace_at(users, index, %{ user | losses: user.losses + 1 })
     end
 
+    def getWinners(st, winners, index) do
+        if (index < Enum.count(st.nextGuesses)) do
+            indexEval = Enum.at(st.nextGuesses, index).eval
+            cond do
+                Enum.count(indexEval.bulls) == 4 ->
+                    getWinners(st, [winners | indexEval.name], index + 1)
+                true ->
+                    getWinners(st, winners, index + 1)
+            end
+        else
+            winners
+        end
+    end
 
     def view(st, user) do
         if st.gameActive == true do
-            num = st.target
-            guess = Enum.at(st.guesses, Enum.count(st.guesses) - 1)
-            checkList = String.graphemes(num)
-            bulls = []
-            cows = []
-            if !Enum.empty?(st.guesses) do
-                IO.inspect checkList
-                IO.inspect guess
-                {bulls, cows} = check(String.graphemes(guess), String.graphemes(num), 0, bulls, cows)
-                %{
-                    bullCow: %{
-                        bull: Enum.count(bulls),
-                        cow: Enum.count(cows)
-                    },
-                    guesses: st.guesses,
-                    gameActive: true,
-                    name: user
-                }
+            if (Enum.count(st.nextGuesses) == Enum.count(st.players)) do
+                if (Enum.count(getWinners(st, [], 0)) > 0) do
+                    afterGame(st, getWinners(st, 0))
+                else
+                    %{
+                        guesses: st.nextGuesses,
+                        nextGuesses: [],
+                        gameActive: st.gameActive
+                    }
+                end
             else
                 %{
-                    bullCow: %{
-                        bull: Enum.count(bulls),
-                        cow: Enum.count(cows)
-                    },
                     guesses: st.guesses,
-                    gameActive: true,
-                    name: user
+                    gameActive: st.gameActive
                 }
             end
         else
