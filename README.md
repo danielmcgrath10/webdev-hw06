@@ -1,19 +1,7 @@
-# Bulls
 
-To start your Phoenix server:
 
-  * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+## Design Decisions
+- Decided to not go with timer, because we could not figure it out
+- Decided to only show the previous guesses and its evaluation to make the game harder
+- we decided to go with react bootstrap because it was a pretty component and layout library
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
