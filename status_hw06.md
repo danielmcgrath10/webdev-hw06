@@ -9,7 +9,7 @@ Daniel McGrath
 hw06.danny-mcgrath.com
 
 3. Which parts of this assignment did you have trouble with, if any?
-We had trouble with the timer aspect of the server
+We had trouble with the timer aspect of the server and with getting the game to only join the channel once.
 
 4. What part of your application state is on the server?
 Our game and user state is on the server.
