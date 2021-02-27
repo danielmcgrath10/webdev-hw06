@@ -11,7 +11,7 @@ use Mix.Config
 # before starting your production server.
 
 config :bulls, BullsWeb.Endpoint,
-  url: [host: "hw05.danny-mcgrath.com", port: 80],
+  url: [host: "hw06.danny-mcgrath.com", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Do not print debug messages in production
