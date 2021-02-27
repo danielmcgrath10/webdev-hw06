@@ -6,6 +6,8 @@ defmodule Bulls.Game do
             players: [],
             readys: [],
             lastWinners: [],
+            target: 0,
+            guesses: []
         }
     end
     
@@ -51,36 +53,35 @@ defmodule Bulls.Game do
     
     def newUser(st, name) do
         %{ st |
-            userName: name,
             users: st.users ++ [%{ name: name, wins: 0, losses: 0,}],
         }
     end
 
-    def player(st, playerBool) do
-        %{st | players: updatePlayers(st, playerBool)}
+    def player(st, userName, playerBool) do
+        IO.inspect st
+        %{st | players: updatePlayers(st, userName, playerBool)}
     end
-    def updatePlayers(st, playerBool) do
+    def updatePlayers(st, userName, playerBool) do
         if playerBool do
-            st.players ++ [st.userName]
+            st.players ++ [userName]
         else
-            List.delete(st.players, st.userName)
+            List.delete(st.players, userName)
         end
     end
 
-    def ready(st, readyBool) do
-        %{st | readys: updateReadys(st, readyBool)}
+    def ready(st, userName, readyBool) do
+        %{st | readys: updateReadys(st, userName, readyBool)}
     end
-    def updateReadys(st, readyBool) do
+    def updateReadys(st, userName, readyBool) do
         if readyBool do
-            st.readys ++ [st.userName]
+            st.readys ++ [userName]
         else
-            List.delete(st.readys, st.userName)
+            List.delete(st.readys, userName)
         end
     end
 
     def afterGame(st, winners) do
         %{
-            userName: st.userName,
             users: updateScoreboard(st, winners),
             players: [],
             readys: [],
@@ -115,15 +116,6 @@ defmodule Bulls.Game do
         List.replace_at(users, index, %{ user | losses: user.losses + 1 })
     end
 
-    def viewSetup(st) do
-        %{
-            userName: st.userName,
-            users: st.users,
-            players: st.players,
-            readys: st.readys,
-            lastWinners: st.lastWinners,
-        }  
-    end
 
     def view(st, user) do
         if st.gameActive == true do
@@ -158,14 +150,11 @@ defmodule Bulls.Game do
             end
         else
             %{
-                bullCow: %{
-                    bull: 4,
-                    cow: 0
-                },
-                guesses: st.guesses,
-                gameActive: false,
-                name: user
-            }
+                users: st.users,
+                players: st.players,
+                readys: st.readys,
+                lastWinners: st.lastWinners,
+            }  
         end
     end
 

@@ -43,6 +43,14 @@ export function ch_push(channel, guess) {
     });
 }
 
+export function ch_login(channel, name, setState) {
+  channel.push("login", {name: name})
+         .receive("ok", st => setState(st))
+         .receive("error", resp => {
+           console.log("Unable to push", resp)
+         });
+}
+
 export function ch_reset(channel) {
   channel
     .push("reset", {})

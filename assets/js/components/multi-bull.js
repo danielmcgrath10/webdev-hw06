@@ -12,35 +12,30 @@ import {
 } from "react-bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import socket, { ch_init } from "../socket";
+import { ch_join, ch_reset, ch_push, state_update } from "../socket";
 import { useHistory } from "react-router-dom";
 
 export default function MultiBullGame(props) {
-  const { name, setName, user, setUser } = props;
+  const {channel, name, setName, user, setUser } = props;
   const history = useHistory();
 
   const [state, setState] = useState({
-    bullCow: {
-      bull: 0,
-      cow: 0,
-    },
     guesses: [],
     gameActive: false,
     name: undefined
   });
   const [curInput, setCurInput] = useState("");
-  let channel = socket.channel("game:" + name, {});
   let { bullCow, guesses, gameActive } = state;
-  let callback = null;
 
   useEffect(() => {
-    ch_init(channel);
+    if(gameActive === false){
+      history.push("/setup");
+    }
     ch_join(setState);
     channel.on("view", state_update);
-  }, []);
+  }, [gameActive]);
 
   const resetGame = () => {
-    ch_init(channel);
     ch_reset(channel);
     setCurInput("");
   };
@@ -79,7 +74,6 @@ export default function MultiBullGame(props) {
       toast.error("Invalid Input");
       return;
     }
-    ch_init(channel);
     ch_push(channel, {guess: curInput});
     setCurInput("");
   };
@@ -87,7 +81,8 @@ export default function MultiBullGame(props) {
   const getTableData = () => {
     return guesses.map((element, index) => (
       <tr key={index}>
-        <td>{element}</td>
+        <td>{element.name}</td>
+        <
       </tr>
     ));
   };
@@ -112,11 +107,10 @@ export default function MultiBullGame(props) {
             Bulls and Cows: {name}
         </Card.Header>
         <Card.Body id={"game-container"}>
-            {gameActive ? (
             <>
                 <Row id={"display-row"}>
                 <Col>
-                    Result: {`${bullCow.bull} bulls and ${bullCow.cow} cows`}
+                    Result: {`${bullCow[user].eval} bulls and ${bullCow.cow} cows`}
                 </Col>
                 <Col>
                     <Table striped bordered size="sm">
@@ -148,28 +142,6 @@ export default function MultiBullGame(props) {
                 </InputGroup>
                 </Row>
             </>
-            ) : guesses.length == 8 ? (
-            <>
-                <Row>
-                You Are Out of Guesses, Please Press the Reset Button Below
-                </Row>
-                <Row>:`(</Row>
-                <Row>
-                <Button onClick={resetGame} variant={"outline-secondary"}>
-                    Reset
-                </Button>
-                </Row>
-            </>
-            ) : (
-            <>
-                <Row>YOU WIN!!!!</Row>
-                <Row>
-                <Button onClick={resetGame} variant={"outline-secondary"}>
-                    Reset
-                </Button>
-                </Row>
-            </>
-            )}
         </Card.Body>
     </Card>
   );

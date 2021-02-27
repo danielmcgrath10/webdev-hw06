@@ -5,10 +5,12 @@ import Bull from "./bull";
 import { ToastContainer } from "react-toastify";
 import MultiBull from "./multibull";
 import SetupPage from "./setup";
+import socket from "./socket";
 
 export default function MainRouter(props) {
   const [name, setName] = useState(undefined);
   const [user, setUser] = useState(undefined);
+  let channel = socket.channel("game:" + name, {});
   return (
     <div className={"App"}>
       <Suspense>
@@ -23,6 +25,7 @@ export default function MainRouter(props) {
             path={"/setup"}
             render={(props) => (
               <SetupPage
+                channel={channel}
                 name={name}
                 user={user}
                 setName={setName}
@@ -36,6 +39,7 @@ export default function MainRouter(props) {
             render={(props) => (
               <MultiBull
                 {...props}
+                channel={channel}
                 name={name}
                 setName={setName}
                 user={user}
