@@ -21,8 +21,7 @@ export default function MultiBullGame(props) {
 
   const [state, setState] = useState({
     guesses: [],
-    gameActive: false,
-    name: undefined
+    gameActive: true,
   });
   const [curInput, setCurInput] = useState("");
   let { bullCow, guesses, gameActive } = state;
@@ -32,6 +31,7 @@ export default function MultiBullGame(props) {
       history.push("/setup");
     }
     ch_join(setState);
+    console.log(state);
     channel.on("view", state_update);
   }, [gameActive]);
 
@@ -79,12 +79,15 @@ export default function MultiBullGame(props) {
   };
 
   const getTableData = () => {
+    if(_.isEmpty(guesses)){
+      return null;
+    }
     return guesses.map((element, index) => (
       <tr key={index}>
-        <td>{index}</td>
+        <td>{element.name}</td>
         <td>{element.guess}</td>
-        <td>{element.eval.bull}</td>
-        <td>{element.eval.cow}</td>
+        <td>{element.eval.bulls.length}</td>
+        <td>{element.eval.cows.length}</td>
       </tr>
     ));
   };
@@ -111,9 +114,6 @@ export default function MultiBullGame(props) {
         <Card.Body id={"game-container"}>
             <>
                 <Row id={"display-row"}>
-                <Col>
-                    Result: {`${bullCow[user].eval} bulls and ${bullCow.cow} cows`}
-                </Col>
                 <Col>
                     <Table striped bordered size="sm">
                     <thead>

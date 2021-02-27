@@ -22,9 +22,19 @@ defmodule Bulls.Game do
     end
 
     def guess(st, user, guess) do
-        %{
-            st | nextGuesses = st.nextGuesses ++ [newGuess(st, user, guess)]
-        }
+        state =  %{st | nextGuesses: st.nextGuesses ++ [newGuess(st, user, guess)]}
+        if (Enum.count(state.nextGuesses) == Enum.count(state.players)) do
+            %{
+                st |
+                guesses: state.nextGuesses,
+                players: state.players,
+                users: state.users,
+                nextGuesses: [],
+                gameActive: state.gameActive
+            }
+        else
+            state
+        end
     end
 
     def newGuess(st, user, guess) do
@@ -48,7 +58,10 @@ defmodule Bulls.Game do
                     check(guess, str, index + 1, bulls, cows)
             end
         else
-            {bulls, cows}
+            %{
+                bulls: bulls,
+                cows: cows
+            }
         end
     end
     
@@ -82,6 +95,7 @@ defmodule Bulls.Game do
     end
 
     def afterGame(st, winners) do
+        IO.puts "Called"
         %{
             gameActive: false,
             users: updateScoreboard(st, winners),
@@ -119,11 +133,15 @@ defmodule Bulls.Game do
     end
 
     def getWinners(st, winners, index) do
-        if (index < Enum.count(st.nextGuesses)) do
-            indexEval = Enum.at(st.nextGuesses, index).eval
+        IO.inspect index 
+        IO.inspect Enum.count(st.guesses)
+        if (index < Enum.count(st.guesses)) do
+            indexEval = Enum.at(st.guesses, index)
+            IO.inspect indexEval
             cond do
-                Enum.count(indexEval.bulls) == 4 ->
-                    getWinners(st, [winners | indexEval.name], index + 1)
+                Enum.count(indexEval.eval.bulls) == 4 ->
+                    IO.puts "called here"
+                    getWinners(st, winners ++ [indexEval.name], index + 1)
                 true ->
                     getWinners(st, winners, index + 1)
             end
@@ -134,19 +152,14 @@ defmodule Bulls.Game do
 
     def view(st, user) do
         if st.gameActive == true do
-            if (Enum.count(st.nextGuesses) == Enum.count(st.players)) do
-                if (Enum.count(getWinners(st, [], 0)) > 0) do
-                    afterGame(st, getWinners(st, 0))
-                else
-                    %{
-                        guesses: st.nextGuesses,
-                        nextGuesses: [],
-                        gameActive: st.gameActive
-                    }
-                end
+            IO.inspect st.target
+            if (Enum.count(getWinners(st, [], 0)) > 0) do
+                afterGame(st, getWinners(st,[], 0))
             else
                 %{
                     guesses: st.guesses,
+                    players: st.players,
+                    users: st.users,
                     gameActive: st.gameActive
                 }
             end
@@ -156,6 +169,7 @@ defmodule Bulls.Game do
                 players: st.players,
                 readys: st.readys,
                 lastWinners: st.lastWinners,
+                gameActive: st.gameActive
             }  
         end
     end

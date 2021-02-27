@@ -11,13 +11,7 @@ import { Socket } from "phoenix";
 let socket = new Socket("/socket", { params: { token: "" } });
 socket.connect();
 
-let state = {
-  bullCow: {
-    bull: 0,
-    cow: 0,
-  },
-  guesses: [],
-};
+let state;
 
 let callback = null;
 
@@ -29,9 +23,12 @@ export function state_update(st) {
   }
 }
 
-export function ch_join(cb) {
+export function ch_join(cb = false) {
   callback = cb;
-  callback(state);
+  console.log("join", state);
+  if(state){
+    callback(state);
+  }
 }
 
 export function ch_push(channel, guess) {

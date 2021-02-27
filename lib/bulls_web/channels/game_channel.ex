@@ -36,7 +36,7 @@ defmodule BullsWeb.GameChannel do
   def handle_in("guess", %{"guess" => ll}, socket) do
     user = socket.assigns[:user]
     name = socket.assigns[:name]
-    view = Bulls.GameServer.guess(name, ll)
+    view = Bulls.GameServer.guess(name, user, ll)
     |> Bulls.Game.view(user)
     broadcast(socket, "view", view)
     {:reply, {:ok, view}, socket}
