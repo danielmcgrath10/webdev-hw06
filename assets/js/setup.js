@@ -100,7 +100,7 @@ function SetupPage(props) {
     setReadyActive(!readyActive);
   }
 
-  let displayWinners = "Welcome to Bulls and Cows";
+  let displayWinners;
 
   if (lastWinners.length > 0) {
     displayWinners = "Won Last Game: " + lastWinners.toString();
@@ -123,6 +123,13 @@ function SetupPage(props) {
           </Button>
         </Col>
         <Col xs={10}><h2>Bulls and Cows Game</h2></Col>
+      </Row>
+      <Row>
+        <Col>
+            <h3>
+              {displayWinners}
+            </h3>
+        </Col>
       </Row>
       <Row style={{paddingBottom: "15px"}}>
         <Col><h4>User: {user}</h4></Col>
@@ -201,6 +208,7 @@ function SetupPage(props) {
             </Col>
           </Row>
         </Col>
+
       </Row>
     </Container>
   );

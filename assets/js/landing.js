@@ -23,13 +23,8 @@ export default function Landing(props) {
   const handleSubmit = () => {
     if(!_.isEmpty(gameName)){
       setName(gameName);
-      if(activeBtn == 2) {
-        setUser(gameUser);
-        history.push("/setup");
-      } else if(activeBtn == 1) {
-        console.log(gameName);
-        history.push("/bull");
-      } 
+      setUser(gameUser);
+      history.push("/setup");
     } else {
       toast.error("Need to Have a Valid Name");
     }
@@ -40,22 +35,6 @@ export default function Landing(props) {
         <Card style={{ width: "50%" }}>
           <Card.Header>Welcome to Bulls and Cows!</Card.Header>
           <Card.Body id={"landing-card"}>
-            <ButtonGroup className={"landing-card-contents"}>
-              <Button
-                variant={"outline-primary"}
-                active={activeBtn == 1}
-                onClick={() => setActiveBtn(1)}
-              >
-                Single
-              </Button>
-              <Button
-                variant={"outline-primary"}
-                active={activeBtn == 2}
-                onClick={() => setActiveBtn(2)}
-              >
-                Multiplayer
-              </Button>
-            </ButtonGroup>
             <FormControl
               className={"landing-card-contents"}
               type={"text"}
@@ -63,15 +42,13 @@ export default function Landing(props) {
               value={gameName}
               onInput={(e) => setGameName(e.target.value)}
             />
-            {activeBtn == 2 ? (
-              <FormControl
-                className={"landing-card-contents"}
-                type={"text"}
-                placeholder={"Username"}
-                value={gameUser}
-                onInput={(e) => setGameUser(e.target.value)}
-              />
-            ) : null}
+            <FormControl
+              className={"landing-card-contents"}
+              type={"text"}
+              placeholder={"Username"}
+              value={gameUser}
+              onInput={(e) => setGameUser(e.target.value)}
+            />
             <Button
               className={"landing-card-contents"}
               variant={"outline-secondary"}

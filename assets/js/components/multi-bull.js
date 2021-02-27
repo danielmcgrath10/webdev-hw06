@@ -81,8 +81,10 @@ export default function MultiBullGame(props) {
   const getTableData = () => {
     return guesses.map((element, index) => (
       <tr key={index}>
-        <td>{element.name}</td>
-        <
+        <td>{index}</td>
+        <td>{element.guess}</td>
+        <td>{element.eval.bull}</td>
+        <td>{element.eval.cow}</td>
       </tr>
     ));
   };
@@ -116,7 +118,10 @@ export default function MultiBullGame(props) {
                     <Table striped bordered size="sm">
                     <thead>
                         <tr>
-                        <th>Guesses</th>
+                          <th>Name</th>
+                          <th>Guess</th>
+                          <th>Bulls</th>
+                          <th>Cows</th>
                         </tr>
                     </thead>
                     <tbody>{getTableData()}</tbody>
